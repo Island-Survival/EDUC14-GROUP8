@@ -62,28 +62,41 @@
       padding: 0;
     }
 
+    html {
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
+      height: 100%;
+    }
+
     body {
       background-color: var(--bg-parchment);
       color: var(--ink-dark);
       font-family: var(--font-body);
-      min-height: 100vh;
+      min-height: 100%;
       line-height: 1.5;
+      overflow-x: hidden;
+      overflow-y: visible;
+      touch-action: pan-y;
+      -webkit-overflow-scrolling: touch;
       background-image: 
         radial-gradient(circle at 10% 20%, rgba(232, 222, 200, 0.5) 0%, transparent 40%),
         radial-gradient(circle at 90% 80%, rgba(224, 122, 95, 0.12) 0%, transparent 40%),
         radial-gradient(circle at 50% 50%, rgba(45, 106, 79, 0.06) 0%, transparent 60%);
-      background-attachment: fixed;
+      background-attachment: scroll;
       position: relative;
     }
 
     /* Subtle paper texture overlay */
     body::before {
       content: "";
-      position: fixed;
+      position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
+      min-height: 100%;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
       pointer-events: none;
-      z-index: 999;
+      z-index: 0;
     }
 
     /* Container */
@@ -91,17 +104,17 @@
       max-width: 1400px;
       margin: 0 auto;
       padding: 0 1.25rem 3rem;
+      position: relative;
+      z-index: 1;
     }
 
     /* ==========================================================================
-       2. TOP BASECAMP HUD (PERSISTENT STICKY HEADER)
+       2. TOP BASECAMP HUD (NATURALLY SCROLLABLE HEADER)
        ========================================================================== */
     .basecamp-hud {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(44, 34, 30, 0.94);
-      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 10;
+      background: rgba(44, 34, 30, 0.96);
       border-bottom: 3px solid var(--campfire-amber);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
       color: var(--bg-parchment);
@@ -193,7 +206,8 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 0.4rem 1rem;
       border-radius: 12px;
-      min-width: 280px;
+      min-width: 220px;
+      max-width: 100%;
     }
 
     .harmony-label-wrap {
@@ -402,6 +416,27 @@
     @media (max-width: 640px) {
       .camp-signposts-nav {
         grid-template-columns: repeat(2, 1fr);
+      }
+      .basecamp-hud {
+        padding: 0.65rem 0.85rem;
+        margin-bottom: 1rem;
+      }
+      .hud-inner {
+        gap: 0.65rem;
+      }
+      .harmony-container {
+        min-width: 0;
+        width: 100%;
+      }
+      .strategy-pills-wrap {
+        flex-wrap: wrap;
+        width: 100%;
+      }
+      .app-container {
+        padding: 0 0.75rem 2rem;
+      }
+      .parchment-sheet {
+        padding: 1.25rem 0.85rem;
       }
     }
 
@@ -1327,6 +1362,7 @@
       width: 100%; height: 100%;
       pointer-events: none;
       z-index: 9999;
+      display: none;
     }
 
     /* ==========================================================================
@@ -2803,11 +2839,11 @@
               <div class="cork-notes-list" id="colWorked">
                 <div class="sticky-note" style="--rot:-2deg;">
                   "The 8-Voice Council gave equal voting power to younger Grade 7 reps so Grade 9s couldn't monopolize the food."
-                  <div class="sticky-author">- Maya (S-1)</div>
+                  <div class="sticky-author">- (Student-1)</div>
                 </div>
                 <div class="sticky-note note-green" style="--rot:1deg;">
                   "Boiling untreated stream water for 3 full minutes kept zero students sick from bacterial waterborne bugs."
-                  <div class="sticky-author">- Dr. Alcantara (Faculty)</div>
+                  <div class="sticky-author">- (Faculty)</div>
                 </div>
               </div>
             </div>
@@ -2818,11 +2854,11 @@
               <div class="cork-notes-list" id="colFailed">
                 <div class="sticky-note note-pink" style="--rot:2deg;">
                   "Lashing tarps with unbraided beach grass snapped during the 40-knot storm gusts. We need stronger vine lianas."
-                  <div class="sticky-author">- Liam (S-2)</div>
+                  <div class="sticky-author">- (Student-2)</div>
                 </div>
                 <div class="sticky-note" style="--rot:-1.5deg;">
                   "Two sectors kept their radios on during non-watch hours, draining our only solar battery by 15%."
-                  <div class="sticky-author">- Jin (S-6)</div>
+                  <div class="sticky-author">- (Student-6)</div>
                 </div>
               </div>
             </div>
@@ -2833,11 +2869,11 @@
               <div class="cork-notes-list" id="colImprove">
                 <div class="sticky-note note-blue" style="--rot:-1deg;">
                   "Post the daily tarp and pot schedule on the Council Signpost before morning breakfast rations."
-                  <div class="sticky-author">- Chloe (S-4)</div>
+                  <div class="sticky-author">- (Student-4)</div>
                 </div>
                 <div class="sticky-note" style="--rot:2deg;">
                   "Pair one teacher advisor with two student sector leads for rapid emergency veto checks."
-                  <div class="sticky-author">- Mr. Santos (Advisor)</div>
+                  <div class="sticky-author">- (Advisor)</div>
                 </div>
               </div>
             </div>
@@ -3556,6 +3592,8 @@
     /* Particle Burst Engine for Eco Rewards */
     function burstParticles() {
       const canvas = document.getElementById('particle-canvas');
+      if (!canvas) return;
+      canvas.style.display = 'block';
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -3607,6 +3645,7 @@
           requestAnimationFrame(animate);
         } else {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
+          canvas.style.display = 'none';
         }
       }
       animate();
